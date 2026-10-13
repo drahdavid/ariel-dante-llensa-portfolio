@@ -3,7 +3,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // Dominio para el sitemap y las URLs absolutas. SITE_URL lo pisa (p. ej. en la vista previa de Surge).
-const site = process.env.SITE_URL || 'https://arielllensa.com.ar';
+const site = process.env.SITE_URL || 'https://arieldantellensa.site';
 
 export default defineConfig({
   site,
