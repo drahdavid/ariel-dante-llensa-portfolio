@@ -1,0 +1,8 @@
+// Cloudflare Workers: publica dist/ como sitio estático (sin código de servidor).
+{
+  "name": "portfolio-ariel",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}

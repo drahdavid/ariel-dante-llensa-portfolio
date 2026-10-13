@@ -1,0 +1,44 @@
+---
+import CutReveal from './CutReveal.astro';
+import { ui, type Lang } from '../data/site';
+import { photo } from '../lib/dishes';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = ui[lang];
+---
+
+<!-- La foto principal, centrada como una lámina: se abre desde un corte horizontal -->
+<section id="destacada" class="feature" aria-label={t.featureFig}>
+  <CutReveal
+    dish={photo('DLId9QjOSrl')}
+    lang={lang}
+    dir="h"
+    ratio="4 / 5"
+    sizes="(min-width: 700px) 560px, 88vw"
+    class="feature__img"
+  >
+    <figcaption slot="caption" class="feature__cap caps">
+      <span>Fig. 1</span>
+      <span>{t.featureFig}</span>
+    </figcaption>
+  </CutReveal>
+</section>
+
+<style>
+  .feature {
+    padding: 0 var(--gutter);
+  }
+  .feature :global(.feature__img) {
+    width: min(560px, 100%);
+    margin-inline: auto;
+  }
+  .feature__cap {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.1rem;
+  }
+</style>

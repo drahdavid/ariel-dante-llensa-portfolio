@@ -1,0 +1,80 @@
+---
+/*
+  Título con "corte de luz": el texto se dibuja dos veces, cada copia recortada a un lado de una línea casi horizontal.
+  Una línea fina de luz cruza el título y, a su paso, las dos mitades se juntan y lo recomponen.
+  trigger="load": al cargar (hero).  trigger="scroll": al entrar en pantalla.
+  Sin JS o con prefers-reduced-motion sólo se ve el texto.
+*/
+type Tag = 'h1' | 'h2' | 'h3' | 'p' | 'span';
+
+interface Props {
+  text: string;
+  id?: string;
+  as?: Tag;
+  trigger?: 'load' | 'scroll';
+  delay?: number;
+  class?: string;
+}
+
+const { text, id, as: Tag = 'h2', trigger = 'scroll', delay = 0, class: className } = Astro.props;
+---
+
+<Tag id={id} class:list={['ct', className]} data-cut={trigger} data-cut-delay={delay}>
+  <span class="ct__text">{text}</span>
+  <span class="ct__half ct__half--a" aria-hidden="true">{text}</span>
+  <span class="ct__half ct__half--b" aria-hidden="true">{text}</span>
+  <span class="ct__light" aria-hidden="true"></span>
+</Tag>
+
+<style>
+  .ct {
+    --ya: 56%;
+    --yb: 46%;
+    position: relative;
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .ct__half,
+  .ct__light {
+    display: none;
+  }
+
+  :global(.js.motion) .ct[data-cut] .ct__text {
+    visibility: hidden;
+  }
+  :global(.js.motion) .ct[data-cut].is-done .ct__text {
+    visibility: visible;
+  }
+  :global(.js.motion) .ct[data-cut]:not(.is-done) .ct__half,
+  :global(.js.motion) .ct[data-cut]:not(.is-done) .ct__light {
+    display: block;
+  }
+
+  .ct__half {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .ct__half--a {
+    clip-path: polygon(-10% -30%, 110% -30%, 110% var(--yb), -10% var(--ya));
+  }
+  .ct__half--b {
+    clip-path: polygon(-10% var(--ya), 110% var(--yb), 110% 130%, -10% 130%);
+  }
+
+  /* La línea de luz: se ubica sobre el corte y se rota con JS para seguir su ángulo */
+  .ct__light {
+    position: absolute;
+    left: -4%;
+    top: var(--ya);
+    width: 108%;
+    height: 1px;
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, transparent, rgb(236 228 214 / 0.9) 30%, var(--accent) 70%, transparent);
+    box-shadow: 0 0 12px rgb(176 141 98 / 0.55);
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>

@@ -1,0 +1,251 @@
+/* Paleta "menú degustación": negro cálido, marfil y un único acento bronce.
+   --bg/--surface: fondos; --deep: la sección más oscura (contacto); --fg: texto; --accent: bronce, se usa poco. */
+:root {
+  --bg: #0f0d0b;
+  --surface: #171411;
+  --deep: #0a0908;
+  --fg: #ece4d6;
+  --fg-2: rgb(236 228 214 / 0.7);
+  --fg-3: rgb(236 228 214 / 0.58);
+  --rule: rgb(236 228 214 / 0.12);
+  --accent: #b08d62;
+
+  --gutter: clamp(20px, 5vw, 72px);
+  --maxw: 1320px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(16px, 0.3vw + 15px, 18px);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+/* Grano muy leve, como papel de carta */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(110px, 14vw, 220px);
+  position: relative;
+}
+
+/* Versalitas: las etiquetas de la carta */
+.caps {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+/* Número de sección en romanos seguido de un filete */
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+  margin-bottom: 1.8rem;
+}
+.kicker b {
+  font-weight: 400;
+  color: var(--accent);
+}
+.kicker::after {
+  content: '';
+  width: 48px;
+  height: 1px;
+  background: var(--rule);
+}
+
+.section-title {
+  font-size: clamp(3rem, 7vw, 6.5rem);
+}
+
+/* Separador corto, centrado */
+.sep {
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin: 0 auto;
+  background: var(--accent);
+  opacity: 0.7;
+}
+
+/* Link de texto con subrayado fino que se traza al pasar */
+.link {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  padding-bottom: 0.2em;
+}
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.35;
+  transition: opacity 0.4s;
+}
+.link:hover::after,
+.link:focus-visible::after {
+  opacity: 1;
+  animation: underline 0.8s var(--ease-out);
+}
+@keyframes underline {
+  0% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  45% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  55% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* CTA: borde bronce fino que se llena muy despacio */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9em;
+  padding: 1.05em 2em;
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  color: var(--fg);
+  text-decoration: none;
+  font: 400 0.72rem/1 var(--font-body);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 100% / 100% 0;
+  transition: background-size 0.8s var(--ease-out), color 0.6s var(--ease-out);
+}
+.cta:hover,
+.cta:focus-visible {
+  background-size: 100% 100%;
+  color: var(--bg);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 200;
+  padding: 0.6em 1em;
+  background: var(--fg);
+  color: var(--bg);
+  transform: translateY(-200%);
+}
+.skip:focus {
+  transform: none;
+}
+
+/* Revelado de bloques al entrar en pantalla */
+.js.motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .link:hover::after {
+    animation: none;
+  }
+}

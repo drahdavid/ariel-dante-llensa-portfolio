@@ -1,0 +1,113 @@
+---
+import CutTitle from './CutTitle.astro';
+import CutReveal from './CutReveal.astro';
+import { ui, type Lang } from '../data/site';
+import { photo } from '../lib/dishes';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = ui[lang];
+---
+
+<section id="perfil" class="section about" aria-labelledby="about-title">
+  <div class="wrap about__grid">
+    <div class="about__copy">
+      <p class="kicker caps"><b>{t.aboutKicker}</b></p>
+      <CutTitle id="about-title" text={t.aboutTitle} class="section-title" />
+      <p class="about__lead" data-reveal>{t.aboutLead}</p>
+      <div class="about__body">
+        {t.aboutBody.map((p, i) => <p data-reveal={0.1 + i * 0.1}>{p}</p>)}
+      </div>
+      <ul class="about__stats caps" data-reveal="0.2">
+        {t.stats.map((s) => <li>{s}</li>)}
+        <li class="about__avail">{t.available}</li>
+      </ul>
+      <aside class="edu" data-reveal="0.2">
+        <p class="caps">{t.eduLabel}</p>
+        <p class="edu__title">{t.eduTitle}</p>
+        <p class="edu__school">{t.eduSchool}</p>
+      </aside>
+    </div>
+    <div class="about__media">
+      <CutReveal dish={photo('DVegXGRjlLt')} lang={lang} dir="v" ratio="4 / 5" sizes="(min-width: 900px) 38vw, 88vw">
+        <figcaption slot="caption" class="about__fig caps">
+          <span>Fig. 2</span>
+          <span>{photo('DVegXGRjlLt').title[lang]}</span>
+        </figcaption>
+      </CutReveal>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__grid {
+    display: grid;
+    gap: clamp(64px, 8vw, 128px);
+    align-items: start;
+  }
+  .about__copy :global(.section-title) {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .about__lead {
+    font: 300 clamp(1.6rem, 2.6vw, 2.3rem) / 1.28 var(--font-display);
+    margin-bottom: 2rem;
+    max-width: 30ch;
+  }
+  .about__body {
+    color: var(--fg-2);
+    max-width: 52ch;
+  }
+  .about__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 0;
+    list-style: none;
+    margin: 2.8rem 0 0;
+    padding: 1.4rem 0;
+    border-block: 1px solid var(--rule);
+  }
+  .about__stats li {
+    color: var(--fg-2);
+  }
+  .about__stats li:not(:last-child)::after {
+    content: '·';
+    margin: 0 1.1em;
+    color: var(--accent);
+  }
+  .about__stats .about__avail {
+    color: var(--accent);
+  }
+  .edu {
+    margin-top: 2.8rem;
+  }
+  .edu .caps {
+    margin-bottom: 0.8rem;
+  }
+  .edu__title {
+    font: italic 300 clamp(1.4rem, 2vw, 1.7rem) / 1.25 var(--font-display);
+    margin-bottom: 0.3rem;
+  }
+  .edu__school {
+    color: var(--fg-3);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  .about__fig {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.1rem;
+  }
+  @media (min-width: 900px) {
+    .about__grid {
+      grid-template-columns: 7fr 5fr;
+    }
+    .about__media {
+      position: sticky;
+      top: 120px;
+      margin-top: 4rem;
+    }
+  }
+</style>

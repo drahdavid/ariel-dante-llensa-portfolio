@@ -1,0 +1,88 @@
+---
+import CutTitle from './CutTitle.astro';
+import { ui, type Lang } from '../data/site';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = ui[lang];
+const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+---
+
+<section class="section skills" aria-labelledby="skills-title">
+  <div class="wrap">
+    <p class="kicker caps"><b>{t.skillsKicker}</b></p>
+    <CutTitle id="skills-title" text={t.skillsTitle} class="section-title skills__title" />
+    <ol class="skills__list">
+      {
+        t.skills.map((s, i) => (
+          <li class="skill">
+            <span class="skill__rule" data-rule aria-hidden="true" />
+            <span class="skill__n caps">{roman[i]}</span>
+            <h3 class="skill__name" data-reveal={(i % 3) * 0.08}>
+              {s.name}
+            </h3>
+            <p class="skill__desc" data-reveal={(i % 3) * 0.08 + 0.08}>
+              {s.desc}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .skills :global(.skills__title) {
+    margin-bottom: clamp(56px, 7vw, 100px);
+  }
+  .skills__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(48px, 5vw, 72px) clamp(32px, 4vw, 64px);
+  }
+  .skill {
+    position: relative;
+    padding-top: 1.6rem;
+  }
+  .skill__rule {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--rule);
+    transform-origin: 0 50%;
+  }
+  .skill__n {
+    display: block;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .skill__name {
+    font-size: clamp(1.8rem, 2.6vw, 2.3rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 0.7rem;
+  }
+  .skill__desc {
+    color: var(--fg-3);
+    margin: 0;
+    max-width: 34ch;
+    font-size: 0.95rem;
+  }
+  @media (min-width: 700px) {
+    .skills__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1100px) {
+    .skills__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

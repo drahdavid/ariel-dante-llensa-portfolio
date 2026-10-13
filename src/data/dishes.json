@@ -1,0 +1,108 @@
+[
+  {
+    "id": "DTUGqwCDBYa",
+    "file": "DTUGqwCDBYa.jpg",
+    "kind": "dish",
+    "title": { "es": "Carne laminada, alcaparras y flores", "en": "Sliced beef, capers and flowers" },
+    "notes": { "es": "Emulsión, perlas, brotes y pétalos comestibles.", "en": "Emulsion, pearls, sprouts and edible petals." },
+    "alt": {
+      "es": "Láminas de carne cubiertas de alcaparras, perlas, brotes y flores violetas, con trazos de emulsión blanca en un plato moteado",
+      "en": "Slices of beef topped with capers, pearls, sprouts and purple flowers, with strokes of white emulsion on a speckled plate"
+    },
+    "igUrl": "https://www.instagram.com/p/DTUGq35DD6p/"
+  },
+  {
+    "id": "DTUGqwHDHFX",
+    "file": "DTUGqwHDHFX.jpg",
+    "kind": "dish",
+    "title": { "es": "Láminas del mar con teja calada", "en": "Seafood slices with lace tuile" },
+    "notes": { "es": "Aceite verde, brunoise de morrón y flores.", "en": "Green oil, pepper brunoise and flowers." },
+    "alt": {
+      "es": "Láminas de mariscos en círculo sobre aceite verde, coronadas con una teja calada, brotes y flores, en un plato hondo moteado",
+      "en": "Seafood slices arranged in a circle over green oil, topped with a lace tuile, sprouts and flowers, in a speckled bowl"
+    },
+    "igUrl": "https://www.instagram.com/p/DTUGq35DD6p/"
+  },
+  {
+    "id": "DVegXDujiNO",
+    "file": "DVegXDujiNO.jpg",
+    "kind": "dish",
+    "steam": true,
+    "title": { "es": "Pase en serie", "en": "Plates on the pass" },
+    "notes": { "es": "Crema, crocante de hierbas y hoja fresca.", "en": "Velouté, herb crumble and fresh leaf." },
+    "alt": {
+      "es": "Platos hondos blancos alineados sobre madera, cada uno con una crema, un crocante verde y una hoja fresca",
+      "en": "White deep plates lined up on wood, each with a velouté, a green crumble and a fresh leaf"
+    },
+    "igUrl": "https://www.instagram.com/p/DVegcpdDuIG/"
+  },
+  {
+    "id": "DKGZaXysefK",
+    "file": "DKGZaXysefK.jpg",
+    "kind": "dish",
+    "title": { "es": "Roll con tartar de langostinos y mango", "en": "Roll with prawn and mango tartare" },
+    "notes": { "es": "Cebolla morada, cilantro y reducción.", "en": "Red onion, coriander and reduction." },
+    "alt": {
+      "es": "Piezas de sushi coronadas con un tartar de langostinos, mango y cebolla morada, con hojas de perejil",
+      "en": "Sushi pieces topped with a tartare of prawns, mango and red onion, with parsley leaves"
+    },
+    "igUrl": "https://www.instagram.com/p/DKGZag9sn4l/"
+  },
+  {
+    "id": "DKGZaXyshWs",
+    "file": "DKGZaXyshWs.jpg",
+    "kind": "dish",
+    "title": { "es": "Rolls de la barra", "en": "Rolls from the bar" },
+    "notes": { "es": "Palta, salmón sopleteado y crocantes.", "en": "Avocado, torched salmon and crunch." },
+    "alt": {
+      "es": "Rolls de sushi con palta y sésamo negro, salmón sopleteado y cobertura crocante",
+      "en": "Sushi rolls with avocado and black sesame, torched salmon and a crunchy topping"
+    },
+    "igUrl": "https://www.instagram.com/p/DKGZag9sn4l/"
+  },
+  {
+    "id": "DLId9QwORf4",
+    "file": "DLId9QwORf4.jpg",
+    "kind": "dish",
+    "title": { "es": "Sellado a soplete", "en": "Torch-seared" },
+    "notes": { "es": "Llama directa sobre el roll, justo antes del pase.", "en": "Direct flame over the roll, right before the pass." },
+    "alt": {
+      "es": "Manos con guantes negros sopletean un roll de sushi sobre una mesada de acero",
+      "en": "Hands in black gloves torch a sushi roll on a steel counter"
+    },
+    "igUrl": "https://www.instagram.com/p/DLId9YuuZLl/"
+  },
+  {
+    "id": "DLId9QjOSrl",
+    "file": "DLId9QjOSrl.jpg",
+    "kind": "portrait",
+    "title": { "es": "Ariel en la plaza caliente", "en": "Ariel on the hot station" },
+    "alt": {
+      "es": "Ariel Dante Llensa con guantes negros, concentrado mientras usa un soplete en la cocina",
+      "en": "Ariel Dante Llensa wearing black gloves, focused while using a kitchen torch"
+    },
+    "igUrl": "https://www.instagram.com/p/DLId9YuuZLl/"
+  },
+  {
+    "id": "DVegW9vDnKV",
+    "file": "DVegW9vDnKV.jpg",
+    "kind": "portrait",
+    "title": { "es": "Emplatado con pinza", "en": "Plating with tweezers" },
+    "alt": {
+      "es": "Ariel emplata con pinza una fila de platos hondos blancos en una cocina profesional",
+      "en": "Ariel plates a row of white deep plates with tweezers in a professional kitchen"
+    },
+    "igUrl": "https://www.instagram.com/p/DVegcpdDuIG/"
+  },
+  {
+    "id": "DVegXGRjlLt",
+    "file": "DVegXGRjlLt.jpg",
+    "kind": "portrait",
+    "title": { "es": "Concentración en el pase", "en": "Focus on the pass" },
+    "alt": {
+      "es": "Foto en blanco y negro de Ariel emplatando con pinza, con pañuelo en la cabeza y delantal",
+      "en": "Black and white photo of Ariel plating with tweezers, wearing a bandana and apron"
+    },
+    "igUrl": "https://www.instagram.com/p/DVegcpdDuIG/"
+  }
+]

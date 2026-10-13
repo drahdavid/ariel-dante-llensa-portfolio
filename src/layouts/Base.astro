@@ -1,0 +1,98 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import { site, ui, igUrl, type Lang } from '../data/site';
+import { isPreview, isProduction } from '../lib/preview';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = ui[lang];
+const paths = { es: '/', en: '/en/' };
+const abs = (p: string) => (Astro.site ? new URL(p, Astro.site).href : p);
+const canonical = abs(paths[lang]);
+const ogImage = abs('/og.jpg');
+const gaId = isProduction ? site.gaId : undefined;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: lang === 'es' ? 'Cocinero' : 'Cook',
+  description: t.description,
+  image: ogImage,
+  url: canonical,
+  email: `mailto:${site.email}`,
+  telephone: `+${site.whatsapp}`,
+  address: { '@type': 'PostalAddress', addressLocality: 'San Martín', addressRegion: 'Mendoza', addressCountry: 'AR' },
+  alumniOf: { '@type': 'EducationalOrganization', name: 'IGA Mendoza, Instituto Gastronómico' },
+  knowsAbout: ['Emplatado', 'Gestión de cocina', 'Liderazgo de equipos', 'Sushi', 'Alta cocina'],
+  sameAs: [igUrl(site.instagram), site.linkedin],
+};
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{t.title}</title>
+    <meta name="description" content={t.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es" href={abs(paths.es)} />
+    <link rel="alternate" hreflang="en" href={abs(paths.en)} />
+    <link rel="alternate" hreflang="x-default" href={abs(paths.es)} />
+    {isPreview && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#0f0d0b" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content={t.ogLocale} />
+    <meta property="og:title" content={t.title} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <Font cssVariable="--font-display" preload={[{ weight: '300', style: 'normal' }, { weight: '300', style: 'italic' }]} />
+    <Font cssVariable="--font-body" preload={[{ weight: '300' }, { weight: '400' }]} />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {
+      gaId && (
+        <script is:inline define:vars={{ gaId }}>
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () { dataLayer.push(arguments); };
+          gtag('js', new Date());
+          gtag('config', gaId);
+          const load = () => {
+            const s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+            document.head.appendChild(s);
+          };
+          if (document.readyState === 'complete') load();
+          else addEventListener('load', load);
+          // Contactos: clics a WhatsApp o mail (marcar generate_lead como evento clave en GA)
+          document.addEventListener('click', (e) => {
+            const a = e.target.closest && e.target.closest('a[href*="wa.me"], a[href^="mailto:"]');
+            if (a) gtag('event', 'generate_lead', { method: a.href.startsWith('mailto:') ? 'email' : 'whatsapp' });
+          });
+        </script>
+      )
+    }
+  </head>
+  <body>
+    <a class="skip" href="#main">{t.skip}</a>
+    <slot />
+    <script>
+      import '../scripts/motion';
+    </script>
+  </body>
+</html>

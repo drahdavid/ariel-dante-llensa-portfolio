@@ -1,0 +1,269 @@
+---
+import { getImage } from 'astro:assets';
+import CutTitle from './CutTitle.astro';
+import CutReveal from './CutReveal.astro';
+import Steam from './Steam.astro';
+import { ui, type Lang } from '../data/site';
+import { dishes, imageFor } from '../lib/dishes';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = ui[lang];
+
+// Composición editorial: cada plato con su proporción y la dirección del corte que lo abre
+const layout = [
+  { ratio: '1 / 1', dir: 'h' },
+  { ratio: '4 / 5', dir: 'v' },
+  { ratio: '4 / 5', dir: 'v' },
+  { ratio: '1 / 1', dir: 'h' },
+  { ratio: '1 / 1', dir: 'h' },
+  { ratio: '4 / 5', dir: 'v' },
+] as const;
+
+const items = await Promise.all(
+  dishes.map(async (d, i) => ({
+    d,
+    ...layout[i % layout.length],
+    full: (await getImage({ src: imageFor(d), width: 1600, format: 'webp', quality: 80 })).src,
+  })),
+);
+---
+
+<section id="platos" class="section dishes" aria-labelledby="dishes-title">
+  <div class="wrap">
+    <header class="dishes__head">
+      <p class="kicker caps"><b>{t.dishesKicker}</b></p>
+      <CutTitle id="dishes-title" text={t.dishesTitle} class="section-title" />
+      <p class="dishes__intro" data-reveal>{t.dishesIntro}</p>
+    </header>
+
+    <ol class="dishes__grid">
+      {
+        items.map(({ d, ratio, dir, full }, i) => (
+          <li class={`dish dish--${i + 1}`}>
+            <a
+              class="dish__link"
+              href={d.igUrl}
+              target="_blank"
+              rel="noopener"
+              data-lightbox
+              data-full={full}
+              data-alt={d.alt[lang]}
+              data-title={d.title[lang]}
+              data-notes={d.notes?.[lang] ?? ''}
+            >
+              <CutReveal dish={d} lang={lang} dir={dir} ratio={ratio} sizes="(min-width: 900px) 45vw, 88vw">
+                {d.steam && <Steam density={0.8} />}
+                <figcaption slot="caption" class="dish__cap">
+                  <span class="caps">N.º {String(i + 1).padStart(2, '0')}</span>
+                  <span class="dish__title">{d.title[lang]}</span>
+                  {d.notes && <span class="dish__notes">{d.notes[lang]}</span>}
+                </figcaption>
+              </CutReveal>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <dialog class="lb" aria-label={t.dishesTitle} data-lenis-prevent>
+    <form method="dialog" class="lb__close-form">
+      <button class="lb__close caps">{t.close}</button>
+    </form>
+    <figure class="lb__fig">
+      <img class="lb__img" alt="" />
+      <figcaption class="lb__cap">
+        <span class="lb__title"></span>
+        <span class="lb__notes"></span>
+        <a class="lb__ig link caps" target="_blank" rel="noopener">{t.seeOnIg}</a>
+      </figcaption>
+    </figure>
+  </dialog>
+</section>
+
+<style>
+  .dishes__head {
+    margin-bottom: clamp(64px, 9vw, 140px);
+  }
+  .dishes__head :global(.section-title) {
+    margin-bottom: 1.4rem;
+  }
+  .dishes__intro {
+    font: italic 300 clamp(1.2rem, 1.6vw, 1.45rem) / 1.4 var(--font-display);
+    color: var(--fg-2);
+    margin: 0;
+  }
+  .dishes__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(72px, 9vw, 140px) 0;
+  }
+  .dish__link {
+    display: block;
+    text-decoration: none;
+    cursor: zoom-in;
+  }
+  .dish__link :global(.cr__media img) {
+    transition: scale 1.6s var(--ease-out);
+  }
+  .dish__link:hover :global(.cr__media img) {
+    scale: 1.03;
+  }
+  .dish__cap {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 1.3rem;
+  }
+  .dish__title {
+    font: italic 300 clamp(1.45rem, 2vw, 1.9rem) / 1.15 var(--font-display);
+  }
+  .dish__notes {
+    font-size: 0.92rem;
+    color: var(--fg-3);
+  }
+
+  /* Mobile: una columna que alterna anchos */
+  .dish:nth-child(even) {
+    width: 82%;
+    justify-self: end;
+  }
+  .dish:nth-child(odd) {
+    width: 92%;
+  }
+
+  @media (min-width: 900px) {
+    .dishes__grid {
+      grid-template-columns: repeat(12, 1fr);
+      column-gap: clamp(20px, 2.5vw, 40px);
+      row-gap: clamp(80px, 9vw, 150px);
+    }
+    .dish:nth-child(n) {
+      width: auto;
+    }
+    .dish--1 {
+      grid-column: 1 / span 6;
+    }
+    .dish--2 {
+      grid-column: 9 / span 4;
+      margin-top: 24vh;
+    }
+    .dish--3 {
+      grid-column: 2 / span 4;
+    }
+    .dish--4 {
+      grid-column: 7 / span 5;
+      margin-top: 16vh;
+    }
+    .dish--5 {
+      grid-column: 1 / span 5;
+    }
+    .dish--6 {
+      grid-column: 8 / span 4;
+      margin-top: 10vh;
+    }
+  }
+
+  /* Lightbox */
+  .lb {
+    width: min(1000px, 94vw);
+    max-height: 94svh;
+    padding: 0;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--fg);
+    overflow: auto;
+  }
+  .lb::backdrop {
+    background: rgb(5 4 3 / 0.9);
+  }
+  .lb[open] {
+    animation: lb-in 0.7s var(--ease-out);
+  }
+  @keyframes lb-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+  .lb__close-form {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+  }
+  .lb__close {
+    border: 0;
+    background: rgb(10 9 8 / 0.7);
+    color: var(--fg);
+    padding: 1em 1.4em;
+    cursor: pointer;
+  }
+  .lb__close:hover {
+    color: var(--accent);
+  }
+  .lb__fig {
+    margin: 0;
+    display: grid;
+  }
+  .lb__img {
+    width: 100%;
+    max-height: 72svh;
+    object-fit: contain;
+    background: #000;
+  }
+  .lb__cap {
+    display: grid;
+    justify-items: start;
+    gap: 0.4rem;
+    padding: 1.4rem 1.6rem 1.7rem;
+  }
+  .lb__title {
+    font: italic 300 1.8rem/1.15 var(--font-display);
+  }
+  .lb__notes {
+    color: var(--fg-3);
+  }
+  .lb__ig {
+    margin-top: 0.6rem;
+    color: var(--accent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lb[open] {
+      animation: none;
+    }
+    .dish__link :global(.cr__media img) {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Lightbox: abre el plato en grande. Sin JS, el link lleva al post de Instagram.
+  const dialog = document.querySelector<HTMLDialogElement>('.lb');
+  if (dialog && typeof dialog.showModal === 'function') {
+    const img = dialog.querySelector<HTMLImageElement>('.lb__img')!;
+    const title = dialog.querySelector('.lb__title')!;
+    const notes = dialog.querySelector('.lb__notes')!;
+    const ig = dialog.querySelector<HTMLAnchorElement>('.lb__ig')!;
+    document.querySelectorAll<HTMLAnchorElement>('[data-lightbox]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+        e.preventDefault();
+        img.src = a.dataset.full!;
+        img.alt = a.dataset.alt!;
+        title.textContent = a.dataset.title!;
+        notes.textContent = a.dataset.notes!;
+        ig.href = a.href;
+        dialog.showModal();
+      });
+    });
+    // Clic fuera de la imagen (en el fondo) cierra
+    dialog.addEventListener('click', (e) => e.target === dialog && dialog.close());
+  }
+</script>
