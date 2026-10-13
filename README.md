@@ -25,4 +25,7 @@ Dirección "menú degustación": negro cálido, marfil y un acento bronce (token
 - Todo vive en `src/scripts/motion.ts`. Con `prefers-reduced-motion` o sin JS se ve el contenido completo, sin animar.
 
 ## Deploy
-Cloudflare Workers con `wrangler.jsonc` (sirve `dist/`). Cambiar el dominio en `astro.config.mjs` (`site`).
+Producción: https://arieldantellensa.site, en Cloudflare Workers (Worker `ariel-dante-llensa-portfolio`, sirve `dist/` según `wrangler.jsonc`).
+- Cada push a `main` compila (`npm run build`) y publica (`npx wrangler deploy`) solo, con Workers Builds conectado a este repo.
+- El `name` de `wrangler.jsonc` tiene que coincidir con el nombre del Worker en el panel.
+- Dominio registrado en Namecheap con DNS en Cloudflare (nameservers `doug` y `maxine.ns.cloudflare.com`). Si cambia el dominio, actualizar `site` en `astro.config.mjs`.
